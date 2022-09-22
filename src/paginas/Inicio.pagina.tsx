@@ -17,7 +17,7 @@ const PaginaInicio = () => {
     return <div className="container">
         <div className="actions">
             <h3>Catálogo de Personajes</h3>
-            <button className="danger" onClick={() => dispatch(resetSearch())}>Test Button</button>
+            <button className="danger" onClick={() => dispatch(resetSearch())}>Limpiar filtro</button>
         </div>
         <Filtros />
         <Paginacion />

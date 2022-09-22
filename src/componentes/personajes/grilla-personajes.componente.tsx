@@ -14,7 +14,8 @@ import { useDispatch } from 'react-redux';
  * @returns un JSX element 
  */
 const GrillaPersonajes:FC = () => {
-  const { search, status, characters, page } = useSelector(state => state.characters);
+  const { search, status, characters, page, favorites } = useSelector(state => state.characters);
+  console.log(favorites)
   const dispatch = useDispatch();
   useEffect(() => {
     if (search === ''){
@@ -41,7 +42,6 @@ const GrillaPersonajes:FC = () => {
        {characters.map((character) => (
             <TarjetaPersonaje character={character} />
         ))}
-        
     </div>
 )
 }

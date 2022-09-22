@@ -1,8 +1,8 @@
 import { ActionCreator, ThunkAction} from '@reduxjs/toolkit'
 import { getAll, searchCharactersWithQuery } from '../../../service/api'
-import { AddToFavoritesAction, ChangePageAction, CharactersActions, InitialFetchOfCharactersAction, InitialFetchOfCharactersErrorAction, InitialFetchOfCharactersSuccessAction, ResetSearchAction, SearchCharactersAction, SearchCharactersErrorAction, SearchCharactersSuccessAction } from '../../../types/character.actions'
+import { AddToFavoritesAction, ChangePageAction, CharactersActions, InitialFetchOfCharactersAction, InitialFetchOfCharactersErrorAction, InitialFetchOfCharactersSuccessAction, RemoveAllFromFavoritesAction, RemoveFromFavoritesAction, ResetSearchAction, SearchCharactersAction, SearchCharactersErrorAction, SearchCharactersSuccessAction } from '../../../types/character.actions'
 import { Character } from "../../../types/character.types";
-import {IRootState} from "../store"
+
 
 const initialFetchCharacters: ActionCreator<InitialFetchOfCharactersAction> = (page: number) => {
     return {
@@ -59,17 +59,29 @@ export const resetSearch: ActionCreator<ResetSearchAction> = () => {
     }
 }
 
-export const addCharacterToFavorites: ActionCreator<AddToFavoritesAction> = (character: []) => {
+export const addCharacterToFavorites: ActionCreator<AddToFavoritesAction> = (character: Character) => {
     return {
-        type: 'ADD_TO_FAVORITES',
+        type: 'ADD_FAVORITE',
         payload: character
+    }
+}
+export const removeCharacterFromFavorites: ActionCreator<RemoveFromFavoritesAction> = (character: Character) => {
+    return {
+        type: 'REMOVE_FAVORITE',
+        payload: character
+    }
+}
+
+export const removeAllCharactersFromFavorites: ActionCreator<RemoveAllFromFavoritesAction> = () => {
+    return {
+        type: 'REMOVE_ALL',
     }
 }
 
 interface SearchCharactersThunkAction extends ThunkAction<void, unknown, unknown, CharactersActions>{};
 
 export const fetchCharactersThunk = (page: number): SearchCharactersThunkAction => {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         dispatch(initialFetchCharacters(page))
         try {
             const characters = await getAll(page);
@@ -81,7 +93,7 @@ export const fetchCharactersThunk = (page: number): SearchCharactersThunkAction 
 }
 
 export const searchCharactersThunk = (query: string): SearchCharactersThunkAction => {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         dispatch(searchCharacters(query));
         try {
             const characters = await searchCharactersWithQuery(query);
